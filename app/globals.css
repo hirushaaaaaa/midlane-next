@@ -1,26 +1,90 @@
 @import "tailwindcss";
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden auto;
+  position: relative;
+  background-color: #000000;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  font-family: 'Inter', sans-serif;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+* {
+  cursor: none !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Font variables */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Replace BBH Sans Bartle everywhere */
+[style*="BBH Sans Bartle"],
+[class*="title"],
+[class*="heading"] {
+  font-family: var(--font-heading) !important;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.hero-title,
+.hero-subtitle,
+.section-title,
+.vlogs-title,
+.partners-title,
+.booking-title,
+.navbar-logo,
+.footer-brand h3 {
+  font-family: var(--font-heading) !important;
 }
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.hero-title,
+.hero-subtitle,
+.hero-content,
+.listen-buttons,
+.hero-button {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Prevent GSAP initial transforms from affecting page height */
+section {
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+/* section[id] {
+  scroll-margin-top: 80px;
+} */

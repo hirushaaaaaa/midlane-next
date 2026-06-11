@@ -1,0 +1,201 @@
+.booking-section {
+  position: relative;
+  padding: 6rem 2rem;
+  background: #000;
+  overflow: hidden;
+}
+
+.booking-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.5), transparent);
+}
+
+.booking-bg-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(220, 20, 60, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.booking-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header */
+.booking-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.booking-eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  color: #dc143c;
+  margin-bottom: 0.75rem;
+}
+
+.booking-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: #fff;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.5rem 0;
+}
+
+.booking-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 200px;
+  margin: 0 auto 1.5rem;
+}
+
+.booking-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.8));
+}
+
+.booking-divider-line:last-child {
+  background: linear-gradient(to left, transparent, rgba(220, 20, 60, 0.8));
+}
+
+.booking-divider-dot {
+  width: 5px;
+  height: 5px;
+  background: #dc143c;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(220, 20, 60, 0.8);
+}
+
+.booking-description {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+/* Grid */
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.booking-cta-card,
+.booking-events-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 2.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.booking-cta-card:hover,
+.booking-events-card:hover {
+  border-color: rgba(220, 20, 60, 0.3);
+}
+
+.booking-cta-icon {
+  color: #dc143c;
+  margin-bottom: 1.5rem;
+}
+
+.booking-cta-card h3,
+.booking-events-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin: 0 0 1rem;
+}
+
+.booking-cta-card p {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.booking-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  background: #dc143c;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.booking-btn:hover {
+  background: #b8102f;
+  box-shadow: 0 0 30px rgba(220, 20, 60, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Event tags */
+.events-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.event-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.4rem 0.9rem;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+}
+
+.event-tag:hover {
+  border-color: #dc143c;
+  color: #dc143c;
+}
+
+/* Note */
+.booking-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.booking-note svg {
+  color: #dc143c;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .booking-section { padding: 4rem 1rem; }
+  .booking-grid { grid-template-columns: 1fr; }
+}

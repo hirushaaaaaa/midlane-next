@@ -1,0 +1,130 @@
+.partners-section {
+  position: relative;
+  padding: 6rem 0;
+  background: #000;
+  overflow: hidden;
+}
+
+.partners-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(220,20,60,0.5), transparent);
+}
+
+.partners-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.partners-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.partners-eyebrow {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.4em;
+  color: #dc143c;
+  margin-bottom: 0.75rem;
+}
+
+.partners-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: #fff;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.5rem;
+  background: none;
+  -webkit-text-fill-color: #fff;
+}
+
+.partners-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 200px;
+  margin: 0 auto 1.5rem;
+}
+
+.partners-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(220,20,60,0.8));
+}
+
+.partners-divider-line:last-child {
+  background: linear-gradient(to left, transparent, rgba(220,20,60,0.8));
+}
+
+.partners-divider-dot {
+  width: 5px; height: 5px;
+  background: #dc143c;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(220,20,60,0.8);
+}
+
+.partners-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.05em;
+}
+
+.scroll-row-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
+.scroll-row {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+}
+
+.scroll-row.right { animation: scrollRight 40s linear infinite; }
+.scroll-row.left { animation: scrollLeft 40s linear infinite; }
+.scroll-row:hover { animation-play-state: paused; }
+
+.partner-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 2px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  height: 70px;
+  transition: border-color 0.3s ease;
+}
+
+.partner-card:hover {
+  border-color: rgba(220,20,60,0.3);
+}
+
+.partner-logo {
+  max-height: 40px;
+  object-fit: contain;
+  filter: brightness(0.8) grayscale(30%);
+  transition: filter 0.3s ease;
+}
+
+.partner-card:hover .partner-logo {
+  filter: brightness(1.2) grayscale(0%);
+}
+
+@keyframes scrollRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}

@@ -1,0 +1,67 @@
+.loader-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  z-index: 10000;
+  animation: fadeOut 1s forwards;
+  animation-delay: 2s;
+  
+}
+.loader-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column; /* stack logo + bar vertically */
+  align-items: center;    /* horizontal center */
+  gap: 0.5rem;              /* spacing between logo and loader bar */
+}
+
+.loader-content {
+  text-align: center;
+}
+
+.loader-logo {
+  height: 350px;
+  margin-bottom: 1rem;
+}
+
+/* .loader-title {
+  font-size: 3.75rem;
+  font-weight: bold;
+  background: linear-gradient(to bottom right, #b91c1c, #f87171);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 2rem;
+  animation: pulse 2s infinite;
+} */
+
+.loader-bar-bg {
+  width: 16rem;
+  height: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #b91c1c, #f87171);
+  animation: loadProgress 2.5s linear forwards;
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; visibility: hidden; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
