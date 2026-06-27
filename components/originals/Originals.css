@@ -110,3 +110,18 @@
   .originals-section { padding: 4rem 1rem; }
   .videos-grid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .originals-section { padding: 3.5rem 1.25rem; }
+  .originals-header  { margin-bottom: 2.5rem; }
+ 
+  .videos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+ 
+  /* Slightly taller 16:9 ratio on mobile so videos are watchable */
+  .video-wrapper {
+    padding-bottom: 56.25%;
+  }
+}

@@ -34,10 +34,13 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Font variables */
+/* ─── FIX: use --vh custom property for hero height on iOS ─────────────────
+   iOS Safari shrinks vh when the address bar is visible. We set --vh in JS
+   via setVhVariable() and use calc(var(--vh, 1vh) * 100) instead of 100vh. */
 :root {
   --font-heading: 'Bebas Neue', sans-serif;
   --font-body: 'Inter', sans-serif;
+  --vh: 1vh; /* fallback; overridden by JS */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -45,7 +48,6 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: 0.05em;
 }
 
-/* Replace BBH Sans Bartle everywhere */
 [style*="BBH Sans Bartle"],
 [class*="title"],
 [class*="heading"] {
@@ -70,6 +72,7 @@ h1, h2, h3, h4, h5, h6 {
   overflow-x: hidden;
 }
 
+/* ─── FIX: hero content always visible (never let GSAP hide it) ─────────── */
 .hero-title,
 .hero-subtitle,
 .hero-content,
@@ -79,12 +82,29 @@ h1, h2, h3, h4, h5, h6 {
   visibility: visible !important;
 }
 
-/* Prevent GSAP initial transforms from affecting page height */
+/* ─── FIX: sections that GSAP animates — default to visible ────────────────
+   On desktop GSAP sets opacity:0 before animating in. That's fine.
+   On mobile we use immediateRender:false so sections stay visible until
+   the ScrollTrigger actually fires. Belt-and-suspenders: if JS fails the
+   section is still readable. */
 section {
   will-change: transform, opacity;
   overflow: hidden;
 }
 
-/* section[id] {
-  scroll-margin-top: 80px;
-} */
+/* ─── Mobile: sections must be visible even if GSAP hasn't run yet ─────── */
+@media (max-width: 768px) {
+  section:not(.hero-section) {
+    opacity: 1;
+  }
+}
+
+/* Touch devices: disable cursor: none (it hides the native tap indicator) */
+@media (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+  .custom-cursor {
+    display: none !important;
+  }
+}

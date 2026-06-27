@@ -8,11 +8,9 @@
 .members-section::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.5), transparent);
+  background: linear-gradient(to right, transparent, rgba(220,20,60,0.5), transparent);
 }
 
 .members-inner {
@@ -20,7 +18,6 @@
   margin: 0 auto;
 }
 
-/* Header */
 .members-header {
   text-align: center;
   margin-bottom: 4rem;
@@ -53,33 +50,29 @@
 .members-divider-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(220, 20, 60, 0.8));
+  background: linear-gradient(to right, transparent, rgba(220,20,60,0.8));
 }
 
 .members-divider-line:last-child {
-  background: linear-gradient(to left, transparent, rgba(220, 20, 60, 0.8));
+  background: linear-gradient(to left, transparent, rgba(220,20,60,0.8));
 }
 
 .members-divider-dot {
-  width: 5px;
-  height: 5px;
+  width: 5px; height: 5px;
   background: #dc143c;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(220, 20, 60, 0.8);
+  box-shadow: 0 0 8px rgba(220,20,60,0.8);
 }
 
-/* Grid */
 .members-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
 }
 
-/* Card */
 .member-card {
   position: relative;
   cursor: pointer;
-  group: true;
 }
 
 .member-image-wrapper {
@@ -106,7 +99,7 @@
 .member-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(220, 20, 60, 0.8) 0%, transparent 60%);
+  background: linear-gradient(to top, rgba(220,20,60,0.8) 0%, transparent 60%);
   opacity: 0;
   transition: opacity 0.4s ease;
   display: flex;
@@ -115,7 +108,8 @@
   padding-bottom: 1.5rem;
 }
 
-.member-card:hover .member-overlay {
+.member-card:hover .member-overlay,
+.member-card:focus .member-overlay {
   opacity: 1;
 }
 
@@ -151,23 +145,70 @@
 
 .member-card-border {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   width: 0;
   height: 2px;
   background: #dc143c;
   transition: width 0.4s ease;
 }
 
-.member-card:hover .member-card-border {
+.member-card:hover .member-card-border,
+.member-card:focus .member-card-border {
   width: 100%;
 }
 
-@media (max-width: 768px) {
-  .members-section { padding: 4rem 1rem; }
-  .members-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+/* ─── Tablet ─────────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .members-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
 }
 
-@media (max-width: 480px) {
-  .members-grid { grid-template-columns: repeat(2, 1fr); }
+/* ─── Mobile ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .members-section {
+    padding: 3.5rem 1.25rem;
+  }
+
+  .members-header {
+    margin-bottom: 2.5rem;
+  }
+
+  .members-title {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  /* 2-column grid — roomy enough to see faces clearly */
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  /* On touch show overlay always (no hover) */
+  @media (pointer: coarse) {
+    .member-overlay {
+      opacity: 0.7;
+    }
+  }
+
+  .member-name {
+    font-size: 1rem;
+  }
+
+  .member-role {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .member-info {
+    padding: 0.75rem 0 0.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .members-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
 }
