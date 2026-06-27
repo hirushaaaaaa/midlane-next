@@ -17,7 +17,10 @@
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  z-index: -1;
+  /* FIX: z-index:0 instead of -1. With overflow:visible on the section,
+     z-index:-1 punches below the page background and the video disappears.
+     Use z-index:0 and keep content above it with z-index:2. */
+  z-index: 0;
 }
 
 .video-background .video {
