@@ -2,7 +2,8 @@
   position: relative;
   background: #000;
   padding: 6rem 2rem;
-  overflow: hidden;
+  /* overflow:hidden removed — breaks ScrollTrigger on mobile */
+  overflow: visible;
 }
 
 .members-section::before {

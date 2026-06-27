@@ -2,7 +2,8 @@
   position: relative;
   padding: 6rem 2rem;
   background: #000;
-  overflow: hidden;
+  /* overflow:hidden removed — breaks ScrollTrigger on mobile */
+  overflow: visible;
 }
 
 .worldwide-section::before {
@@ -159,4 +160,3 @@
     padding: 1.5rem 0.75rem 0.75rem;
   }
 }
- 

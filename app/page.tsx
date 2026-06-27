@@ -22,9 +22,6 @@ import Cursor from "@/components/cursor/Cursor";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// ─── FIX 1: mobile viewport height variable ──────────────────────────────────
-// iOS Safari changes the vh unit when the address bar hides/shows.
-// Setting --vh once on load (and on resize) avoids blank section gaps.
 function setVhVariable() {
   document.documentElement.style.setProperty(
     "--vh",
@@ -36,7 +33,6 @@ export default function Home() {
   const [loadingComplete, setLoadingComplete] = useState(false);
   const mmRef = useRef(null);
 
-  // ─── FIX 2: set vh variable early, before any paint ─────────────────────
   useEffect(() => {
     setVhVariable();
     window.addEventListener("resize", setVhVariable, { passive: true });
@@ -45,9 +41,6 @@ export default function Home() {
 
   const handleLoadingComplete = () => {
     setLoadingComplete(true);
-    // ─── FIX 3: double-rAF + generous delay before refresh ──────────────
-    // The loader hides, React re-renders all sections, fonts load — only THEN
-    // does ScrollTrigger have correct getBoundingClientRect() values.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -67,7 +60,6 @@ export default function Home() {
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // ─── layout: lock navbar ─────────────────────────────────────────────
     const setupLayout = () => {
       const navbar = document.querySelector(".navbar");
       const cursor = document.querySelector(".custom-cursor");
@@ -98,7 +90,7 @@ export default function Home() {
     setTimeout(setupLayout, 50);
     setTimeout(setupLayout, 200);
 
-    // ─── hero entrance ───────────────────────────────────────────────────
+    // Hero entrance
     const heroTitle = document.querySelector(".hero-title");
     if (heroTitle) {
       gsap.set(heroTitle, { opacity: 1, visibility: "visible" });
@@ -121,7 +113,7 @@ export default function Home() {
       }
     }
 
-    // ─── hero parallax (desktop only) ───────────────────────────────────
+    // Hero parallax (desktop only)
     if (!isMobile) {
       const heroSection = document.querySelector(".hero");
       if (heroSection) {
@@ -138,7 +130,7 @@ export default function Home() {
       }
     }
 
-    // ─── navbar scroll class ─────────────────────────────────────────────
+    // Navbar scroll class
     const navbar = document.querySelector(".navbar");
     if (navbar) {
       ScrollTrigger.create({
@@ -156,75 +148,60 @@ export default function Home() {
       });
     }
 
-    // ─── FIX 4: matchMedia animations ────────────────────────────────────
-    // Key changes:
-    //  • Mobile sections start at opacity:0 via CSS (not GSAP set) so the
-    //    initial paint is correct before JS runs.
-    //  • `immediateRender: false` on mobile prevents GSAP from snapping
-    //    sections to opacity:0 AFTER they've already been visible.
-    //  • start: "top 100%" catches elements that are already partly on screen
-    //    when the page first renders (e.g. the About section right below hero).
-    //  • invalidateOnRefresh: true recalculates positions after orientation change.
     const mm = gsap.matchMedia();
     mmRef.current = mm;
 
+    // ─── MOBILE: Skip ScrollTrigger section animations entirely ──────────────
+    // On mobile, the most reliable approach is to use IntersectionObserver
+    // instead of GSAP ScrollTrigger for section reveals. This avoids all the
+    // iOS scroll measurement issues.
     mm.add("(max-width: 768px)", () => {
-      // ─── FIX 5: ScrollTrigger config for mobile ──────────────────────
-      ScrollTrigger.config({
-        limitCallbacks: true,
-        syncInterval: 40,
-        ignoreMobileResize: true, // don't re-trigger on address-bar show/hide
-        autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
-      });
-
+      // Make all sections visible immediately — no opacity:0 trap
       const sections = gsap.utils.toArray(
         "section:not(.hero-section):not(.navbar)"
       );
       sections.forEach((section) => {
-        gsap.fromTo(
-          section,
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power2.out",
-            immediateRender: false,
-            scrollTrigger: {
-              trigger: section as Element,
-              // ─── FIX 6: "top 100%" so first section below fold fires
-              //     the moment even 1px enters the viewport
-              start: "top 100%",
-              end: "bottom 0%",
-              toggleActions: "play none none none",
-              invalidateOnRefresh: true,
-              // ─── FIX 7: markers: true for debugging; remove for prod
-              // markers: true,
-            },
-          }
-        );
+        gsap.set(section, { opacity: 1, y: 0, clearProps: "all" });
       });
 
-      // cards
-      const cards = gsap.utils.toArray(
+      // Use IntersectionObserver for card animations (much more reliable on iOS)
+      const cards = document.querySelectorAll(
         ".music-placeholder, .member-card, .tour-card, .simple-event-card, .worldwide-card"
       );
+
       if (cards.length > 0) {
-        ScrollTrigger.batch(cards as Element[], {
-          start: "top 100%",
-          onEnter: (elements) =>
-            gsap.to(elements, {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.5,
-              stagger: 0.06,
-              ease: "power2.out",
-            }),
-          invalidateOnRefresh: true,
+        // Set initial state
+        cards.forEach((card) => {
+          (card as HTMLElement).style.opacity = "0";
+          (card as HTMLElement).style.transform = "translateY(20px)";
+          (card as HTMLElement).style.transition = "opacity 0.5s ease, transform 0.5s ease";
         });
-        gsap.set(cards, { opacity: 0, y: 20, scale: 0.97 });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry, i) => {
+              if (entry.isIntersecting) {
+                setTimeout(() => {
+                  (entry.target as HTMLElement).style.opacity = "1";
+                  (entry.target as HTMLElement).style.transform = "translateY(0)";
+                }, i * 60);
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+        );
+
+        cards.forEach((card) => observer.observe(card));
       }
+
+      // ScrollTrigger only for navbar
+      ScrollTrigger.config({
+        limitCallbacks: true,
+        syncInterval: 40,
+        ignoreMobileResize: true,
+        autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+      });
     });
 
     mm.add("(min-width: 769px) and (max-width: 1024px)", () => {
@@ -278,7 +255,7 @@ export default function Home() {
         );
       });
 
-      // desktop-only 3D effects
+      // Desktop-only 3D effects
       const aboutImageWrapper = document.querySelector(".about-image-wrapper");
       if (aboutImageWrapper) {
         gsap.set(aboutImageWrapper, {
@@ -401,7 +378,6 @@ export default function Home() {
         );
       });
 
-      // subtle parallax on images
       const aboutImage = document.querySelector(".about-image-wrapper img");
       if (aboutImage) {
         gsap.to(aboutImage, {
@@ -417,10 +393,8 @@ export default function Home() {
       }
     });
 
-    // ─── FIX 8: refresh after everything settles ─────────────────────────
     const refreshId = setTimeout(() => ScrollTrigger.refresh(true), 600);
 
-    // ─── mobile scroll performance ────────────────────────────────────────
     if (isMobile || isTouchDevice) {
       let scrollTimeout: ReturnType<typeof setTimeout>;
       let isScrolling = false;
@@ -445,7 +419,6 @@ export default function Home() {
       };
     }
 
-    // ─── orientation / resize handlers ───────────────────────────────────
     const onOrientationChange = () => {
       setTimeout(() => {
         setVhVariable();
